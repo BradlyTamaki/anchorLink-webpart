@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "anchor-link-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/anchorLink/AnchorLinkWebPart.js",
+          "manifest": "./src/webparts/anchorLink/AnchorLinkWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AnchorLinkWebPartStrings": "lib/webparts/anchorLink/loc/{locale}.js"
+  }
+}
