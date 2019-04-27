@@ -1,5 +1,13 @@
 @import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
 
+.anchorLinkFlex {
+  display: flex;
+}
+
+.anchorLink.anchorLinkDontShow > * {
+  display: none;
+}
+
 .anchorLink {
   .container {
     max-width: 700px;
@@ -21,6 +29,7 @@
     @include ms-xlPush2;
     @include ms-lgPush1;
     display: flex;
+    width: 80% !important;
   }
 
   .columnIcon {
@@ -36,6 +45,28 @@
   .subTitle {
     @include ms-font-l;
     @include ms-fontColor-white;
+  }
+
+
+
+
+  .anchorLinkIcon {
+    left: 25px;
+    padding-right: 5px;
+  }
+  .anchorLinkLine {
+    border-bottom: 3px solid #000;
+    height: 16px;
+    width: 100%;
+  }
+  .anchorLinkCaption {
+    padding: 0 10px;
+
+    span {
+      font-weight: bold;
+      white-space: nowrap;
+      align-self: center;
+    }
   }
 
   .button {
@@ -60,6 +91,7 @@
     cursor: pointer;
     display: inline-block;
     padding: 0 16px;
+    margin-bottom: 8px;
 
     .label {
       font-weight: $ms-font-weight-semibold;
