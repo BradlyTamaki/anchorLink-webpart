@@ -3,7 +3,8 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneToggle
+  PropertyPaneChoiceGroup,
+  PropertyPaneDropdown
 } from '@microsoft/sp-property-pane';
 import { escape } from '@microsoft/sp-lodash-subset';
 
@@ -14,7 +15,9 @@ import { SPComponentLoader } from '@microsoft/sp-loader';
 
 export interface IAnchorLinkWebPartProps {
   anchorLink: string;
-  showInView: boolean;
+  anchorLinkText: string;
+  anchorStyle: string;
+  anchorAlign: string;
 }
 
 export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLinkWebPartProps> {
@@ -28,8 +31,23 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
     return Mode == DisplayMode.Edit ? 'block': 'none';
   }
 
-  public onlyShowInViewMode(ShowInViewMode: boolean) {
-    return ShowInViewMode ? '' : styles.anchorLinkDontShow;
+  public isActive(styleBeingUsed, styleBeingChecked) {
+    return (styleBeingUsed == styleBeingChecked) ? styles.anchorStyleActive : '';
+  }
+
+  public anchorAlign(anchorAlign: string) {
+    var output;
+    switch (anchorAlign) {
+      case 'flex-start':
+        output = styles['anchorflex-start'];
+        break;
+      case 'flex-end':
+        output = styles['anchorflex-end'];
+        break;
+      default:
+        output = '';
+    }
+    return output;
   }
 
   public render(): void {
@@ -39,14 +57,26 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
       this.properties.anchorLink = this.properties.anchorLink.replace(nonAlphanumericRegex,'');
     }
 
+    //remove white space
+    var ControlZone = this.domElement.parentElement.parentElement.parentElement;
+    this.setMarginPaddingToZero(ControlZone);
+    var ControlZoneEmphasisBackground = this.domElement.parentElement.parentElement;
+    this.setMarginPaddingToZero(ControlZoneEmphasisBackground);
+
+    //domElement
     this.domElement.innerHTML = `
-      <div name="${escape(this.properties.anchorLink)}" id="${escape(this.properties.anchorLink)}" class='${ styles.anchorLink } ${ styles.anchorLinkFlex } ${ this.onlyShowInViewMode(this.properties.showInView) }'>
-        <div class='${ styles.anchorLinkLine }'></div>
-        <div class='${ styles.anchorLinkCaption } ${ styles.anchorLinkFlex}'>
-          <i class='fa fa-2x fa-anchor ${ styles.anchorLinkIcon }'></i>
-          <span>${ escape(this.properties.anchorLink.replace(/\_/g, ' ')) }</span>
+      <div name="${escape(this.properties.anchorLink)}" id="${escape(this.properties.anchorLink)}" class='${ styles.anchorLink }'>
+        <h2 style='justify-content: ${ escape(this.properties.anchorAlign) }' class='${ styles.anchorStyle } ${this.isActive(this.properties.anchorStyle, '2')}'>${ escape(this.properties.anchorLinkText) }</h2>
+        <h3 style='justify-content: ${ escape(this.properties.anchorAlign) }' class='${ styles.anchorStyle } ${this.isActive(this.properties.anchorStyle, '3')}'>${ escape(this.properties.anchorLinkText) }</h3>
+        <h4 style='justify-content: ${ escape(this.properties.anchorAlign) }' class='${ styles.anchorStyle } ${this.isActive(this.properties.anchorStyle, '4')}'>${ escape(this.properties.anchorLinkText) }</h4>
+        <div class='${ styles.anchorStyle } ${this.isActive(this.properties.anchorStyle, 'anchor')} ${ this.anchorAlign(escape(this.properties.anchorAlign)) }'>
+          <div class='${ styles.anchorLinkLine }'></div>
+          <div class='${ styles.anchorLinkCaption } ${ styles.anchorLinkFlex}'>
+            <i class='fa fa-2x fa-anchor ${ styles.anchorLinkIcon }'></i>
+            <span>${ escape(this.properties.anchorLinkText) }</span>
+          </div>
+          <div class='${ styles.anchorLinkLine }'></div>
         </div>
-        <div class='${ styles.anchorLinkLine }'></div>
       </div>
       <div class="${ styles.anchorLink }" style='display: ${ this.onlyShowInEditMode(this.displayMode) }; margin-top: 4px'>
         <div class="${ styles.container }">
@@ -71,10 +101,15 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
         </div>
       </div>`;
       
+      //create event for opening property pane
       this.domElement.querySelector(`#anchorLink-${escape(this.properties.anchorLink)}`).addEventListener('click', () => {
         (this.context.propertyPane.isPropertyPaneOpen() != true) ? this.context.propertyPane.open() : this.context.propertyPane.close();
       });
+  }
 
+  public setMarginPaddingToZero(element: HTMLElement) {
+    element.style.margin = '0';
+    element.style.padding = '0';
   }
 
   protected get dataVersion(): Version {
@@ -88,14 +123,60 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
           groups: [
             {
               groupFields: [
+
                 PropertyPaneTextField('anchorLink', {
-                  label: strings.DescriptionFieldLabel,
-                  description: strings.DescriptionDescriptionFieldLabel
+                  label: strings.anchorLinkFieldLabel,
+                  description: strings.anchorLinkDescriptionFieldLabel
                 }),
-                PropertyPaneToggle('showInView', {
-                  label: strings.ShowInViewFieldLabel,
-                  onText: 'Show',
-                  offText: 'Hide'
+                PropertyPaneTextField('anchorLinkText', {
+                  label: strings.anchorLinkTextFieldLabel,
+                }),
+                PropertyPaneChoiceGroup('anchorStyle', {
+                  label: strings.anchorStyleFieldLabel,
+                  options: [{
+                    key: '2',
+                    text: 'Heading 1',
+                    imageSrc: require('./assets/H1.png'),
+                    selectedImageSrc: require('./assets/H1.png'),
+                    imageSize: {height: 60, width: 96}
+                  }, {
+                    key: '3',
+                    text: 'Heading 2',
+                    imageSrc: require('./assets/H2.png'),
+                    selectedImageSrc: require('./assets/H2.png'),
+                    imageSize: {height: 60, width: 96}
+                  }, {
+                    key: '4',
+                    text: 'Heading 3',
+                    imageSrc: require('./assets/H3.png'),
+                    selectedImageSrc: require('./assets/H3.png'),
+                    imageSize: {height: 60, width: 96}
+                  }, {
+                    key: 'anchor',
+                    text: 'Anchor',
+                    imageSrc: require('./assets/A.png'),
+                    selectedImageSrc: require('./assets/A.png'),
+                    imageSize: {height: 60, width: 96}
+                  }, {
+                    key: 'hide',
+                    text: 'Hide',
+                    imageSrc: require('./assets/Hide.png'),
+                    selectedImageSrc: require('./assets/Hide.png'),
+                    imageSize: {height: 60, width: 96}
+                  }]
+                }),
+                PropertyPaneDropdown('anchorAlign', {
+                  label: strings.anchorAlignFieldLabel,
+                  options: [{
+                    key: 'flex-start',
+                    text: 'Left'
+                  }, {
+                    key: 'center',
+                    text: 'Center'
+                  }, {
+                    key: 'flex-end',
+                    text: 'Right'
+                  }, ]
                 })
               ]
             }

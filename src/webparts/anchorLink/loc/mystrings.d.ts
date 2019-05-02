@@ -1,7 +1,9 @@
 declare interface IAnchorLinkWebPartStrings {
-  DescriptionFieldLabel: string;
-  DescriptionDescriptionFieldLabel: string;
-  ShowInViewFieldLabel: string;
+  anchorLinkFieldLabel: string;
+  anchorLinkDescriptionFieldLabel: string;
+  anchorLinkTextFieldLabel: string;
+  anchorStyleFieldLabel: string;
+  anchorAlignFieldLabel: string;
 }
 
 declare module 'AnchorLinkWebPartStrings' {

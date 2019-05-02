@@ -1,7 +1,9 @@
 define([], function() {
   return {
-    "DescriptionFieldLabel": "Anchor Text",
-    "DescriptionDescriptionFieldLabel": "No special characters allowed. For spaces, use underscore. '_'",
-    "ShowInViewFieldLabel": "Show anchor logo on page"
+    "anchorLinkFieldLabel": "Anchor Link",
+    "anchorLinkTextFieldLabel": "Anchor Text",
+    "anchorLinkTextDescriptionFieldLabel": "No special characters allowed. For spaces, use underscore. '_'",
+    "anchorStyleFieldLabel": "Style",
+    "anchorAlignFieldLabel": "Align"
   }
 });
