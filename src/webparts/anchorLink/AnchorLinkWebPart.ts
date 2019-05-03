@@ -39,10 +39,10 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
     var output;
     switch (anchorAlign) {
       case 'flex-start':
-        output = styles['anchorflex-start'];
+        output = styles.anchorflexStart;
         break;
       case 'flex-end':
-        output = styles['anchorflex-end'];
+        output = styles.anchorflexEnd;
         break;
       default:
         output = '';
@@ -58,9 +58,9 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
     }
 
     //remove white space
-    var ControlZone = this.domElement.parentElement.parentElement.parentElement;
+    var ControlZone = this.domElement.closest('.ControlZone') as HTMLElement;
     this.setMarginPaddingToZero(ControlZone);
-    var ControlZoneEmphasisBackground = this.domElement.parentElement.parentElement;
+    var ControlZoneEmphasisBackground = this.domElement.closest('.ControlZoneEmphasisBackground') as HTMLElement;
     this.setMarginPaddingToZero(ControlZoneEmphasisBackground);
 
     //domElement
