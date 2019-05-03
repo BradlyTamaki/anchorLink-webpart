@@ -24,7 +24,7 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
   constructor() {
     super();
 
-    SPComponentLoader.loadCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); //TODO: Use FB CDN
+    SPComponentLoader.loadCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
   }
 
   public onlyShowInEditMode(Mode: DisplayMode) {
@@ -56,12 +56,6 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
     if(this.properties.anchorLink.match(nonAlphanumericRegex)) {
       this.properties.anchorLink = this.properties.anchorLink.replace(nonAlphanumericRegex,'');
     }
-
-    //remove white space
-    var ControlZone = this.domElement.closest('.ControlZone') as HTMLElement;
-    this.setMarginPaddingToZero(ControlZone);
-    var ControlZoneEmphasisBackground = this.domElement.closest('.ControlZoneEmphasisBackground') as HTMLElement;
-    this.setMarginPaddingToZero(ControlZoneEmphasisBackground);
 
     //domElement
     this.domElement.innerHTML = `
@@ -105,11 +99,6 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
       this.domElement.querySelector(`#anchorLink-${escape(this.properties.anchorLink)}`).addEventListener('click', () => {
         (this.context.propertyPane.isPropertyPaneOpen() != true) ? this.context.propertyPane.open() : this.context.propertyPane.close();
       });
-  }
-
-  public setMarginPaddingToZero(element: HTMLElement) {
-    element.style.margin = '0';
-    element.style.padding = '0';
   }
 
   protected get dataVersion(): Version {
