@@ -1,7 +1,7 @@
 ## anchor-link-webpart
 SPFX SharePoint webpart to create anchor links on SharePoint modern page.
 
-[Screenshot](/assets/screenshot.png)
+![Screenshot](/assets/screenshot.png)
 
 ### Building the code
 
