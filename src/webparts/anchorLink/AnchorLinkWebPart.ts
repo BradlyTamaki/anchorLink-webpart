@@ -83,7 +83,7 @@ export default class AnchorLinkWebPart extends BaseClientSideWebPart<IAnchorLink
                 <h3 class='${ styles.title }'>
                   This is a move-able anchor link for <b>#${ escape(this.properties.anchorLink) }</b>
                 </h3>
-                <span>This blue box will only show in edit mode.</span>
+                <span>This box will only show in edit mode.</span>
                 <div>
                   <a class="${ styles.button }" id="anchorLink-${ escape(this.properties.anchorLink) }">
                     <span class="${ styles.label }">Change Anchor Text</span>
