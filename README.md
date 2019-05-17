@@ -1,6 +1,10 @@
 ## anchor-link-webpart
 SPFX SharePoint webpart to create anchor links on SharePoint modern page.
 
+In a text webpart create a hyperlink with #anchorLink for address and it will jump to where the webpart is located on the page.
+
+Note: it will not work outside the current page it lives on. 
+
 ![Screenshot](/assets/screenshot.png)
 
 ### Building the code
